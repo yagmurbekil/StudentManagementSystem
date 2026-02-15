@@ -1,0 +1,75 @@
+# ASP.NET Core .gitignore
+# Kaynak: GitHub + Microsoft önerileri
+
+# Build sonuçları
+bin/
+obj/
+
+# User-specific dosyalar
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider ve VS Code
+.idea/
+.vscode/
+
+# Visual Studio
+.vs/
+
+# ASP.NET Core config dosyaları
+appsettings.*.json
+!appsettings.json
+
+# Database dosyaları
+*.mdf
+*.ldf
+*.sqlite
+*.db
+student.db
+
+# Publish çıktısı
+publish/
+
+# Paketler
+*.nupkg
+*.snupkg
+packages/
+
+# Log dosyaları
+*.log
+
+# Diğer geçici dosyalar
+*.tmp
+*.bak
+*.swp
+*.swo
+*.DS_Store
+Thumbs.db
+
+# wwwroot dışı statik dosyalar
+wwwroot/lib/
+
+# Test sonuçları
+TestResults/
+
+# DotCover
+*.dotCover
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# SonarQube
+.sonar/
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db

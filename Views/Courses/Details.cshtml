@@ -1,0 +1,85 @@
+@model Course
+
+@{
+    ViewData["Title"] = "Ders Detayları";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css">
+
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="fw-bold mb-1"><i class="bi bi-journal-bookmark me-2"></i>@Model.Name</h2>
+            <div class="text-muted mb-2">Öğretmen: <span class="fw-semibold">@Model.Lecturer</span></div>
+            <div class="mb-2">
+                <span class="badge bg-info text-dark me-2"><i class="bi bi-person-check"></i> Devamsızlık: @Model.AbsenteeismCount / @Model.MaxAbsence</span>
+                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-primary btn-sm ms-2"><i class="bi bi-pencil"></i> Düzenle</a>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm ms-1"><i class="bi bi-arrow-left"></i> Geri</a>
+            </div>
+        </div>
+    </div>
+    <div class="row g-4">
+        <div class="col-12 col-md-4 col-lg-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white fw-semibold"><i class="bi bi-list-ol me-2"></i>Konu Başlıkları</div>
+                <div class="list-group list-group-flush">
+                    @if (Model.Topics == null || !Model.Topics.Any()) {
+                        <div class="list-group-item text-muted">Konu başlığı bulunamadı.</div>
+                    } else {
+                        var week = 1;
+                        foreach (var topic in Model.Topics.OrderBy(t => t.Id)) {
+                            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+                                <i class="bi bi-bookmark-star me-2 text-primary"></i>
+                                <span class="me-2">Hafta @week:</span>
+                                <span>@topic.Title</span>
+                                <span class="ms-auto badge bg-light text-dark border"><i class="bi bi-clock me-1"></i>@topic.Duration dk</span>
+                            </a>
+                            week++;
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-8 col-lg-9">
+            <div class="card shadow-sm h-100">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center" style="min-height: 320px;">
+                    <i class="bi bi-info-circle display-3 text-secondary mb-3"></i>
+                    <h4 class="fw-bold mb-2">Konu Detayı</h4>
+                    <p class="text-muted mb-0">Bir konu başlığı seçildiğinde detaylar burada görünecek.<br><span class="d-none d-md-inline">(Dinamik detay için ek geliştirme yapılabilir.)</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <h5 class="fw-semibold mb-3"><i class="bi bi-clipboard-check me-2"></i>Ödevler</h5>
+            @if (Model.Assignments == null || !Model.Assignments.Any()) {
+                <div class="alert alert-secondary">Bu derse ait ödev bulunamadı.</div>
+            } else {
+                <div class="list-group">
+                    @foreach(var a in Model.Assignments.OrderBy(x => x.Deadline)) {
+                        var isUrgent = (a.Deadline > DateTime.Now) && (a.Deadline - DateTime.Now).TotalDays < 2;
+                        <div class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold"><i class="bi bi-journal-text me-1"></i>@a.Title @if(isUrgent) { <span class="badge bg-danger ms-2">⚠️ Acil</span> }</div>
+                                <small class="text-muted">Son teslim: @a.Deadline.ToString("g")</small>
+                            </div>
+                            <div class="text-end">
+                                @if (a.IsCompleted) {
+                                    <span class="badge bg-success"><i class="bi bi-check-circle"></i> Tamamlandı</span>
+                                } else {
+                                    <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split"></i> Beklemede</span>
+                                }
+                                <div class="mt-2">
+                                    <a asp-controller="Assignments" asp-action="Edit" asp-route-id="@a.Id" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i> Düzenle</a>
+                                    <a asp-controller="Assignments" asp-action="Details" asp-route-id="@a.Id" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i> Detay</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

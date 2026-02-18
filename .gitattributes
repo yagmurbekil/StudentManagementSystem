@@ -1,4 +1,9 @@
-*.html linguist-detectable=false
-*.html linguist-documentation=false
 
-*.html linguist-vendored
+*.html linguist-language=C#
+*.html linguist-detectable=false
+
+
+*.css linguist-detectable=false
+
+
+*.cs linguist-detectable=true
